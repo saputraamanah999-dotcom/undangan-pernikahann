@@ -27,8 +27,7 @@ export function useNotificationPermission() {
       const swCheck = await fetch('/firebase-messaging-sw.js', { method: 'HEAD' }).catch(() => null);
       if (!swCheck || !swCheck.ok) return;
 
-      const vapidKey = (import.meta as any).env.VITE_FIREBASE_VAPID_KEY;
-      if (!vapidKey) return;
+      const vapidKey = (import.meta as any).env.VITE_FIREBASE_VAPID_KEY || 'BPdeKiJqs1aSLP490HHgiFSSUjMzWsBMOsCUw0xmZqVMS8XePlSafy047H3cimNWH8jBAz4jnc3zA05DG-hHU7U';
 
       // Dynamic import so messaging SDK is only loaded when needed
       const { getMessaging, getToken } = await import('firebase/messaging');
