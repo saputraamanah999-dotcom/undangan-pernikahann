@@ -1684,6 +1684,35 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                       />
                     </div>
 
+                    {/* Live Photo Preview */}
+                    {newPhotoUrl && (
+                      <div className="relative rounded-xl overflow-hidden border border-white/10 bg-black/40">
+                        <img
+                          src={newPhotoUrl}
+                          alt="Preview"
+                          className="w-full h-40 object-contain bg-black/60"
+                          referrerPolicy="no-referrer"
+                          crossOrigin="anonymous"
+                          onError={(e: any) => {
+                            e.target.style.display = 'none';
+                            const parent = e.target.parentElement;
+                            if (parent && !parent.querySelector('.preview-err')) {
+                              const errDiv = document.createElement('div');
+                              errDiv.className = 'preview-err absolute inset-0 flex flex-col items-center justify-center gap-1 p-3';
+                              errDiv.innerHTML = '<span class="text-[10px] text-red-400 font-bold">Gambar gagal dimuat</span><span class="text-[8px] text-white/40 text-center">Pastikan URL gambar benar & mendukung embed (bukan hotlink-protected).<br/>Coba: imgbb.com, imgur.com, postimages.org, atau unsplash.</span>';
+                              parent.appendChild(errDiv);
+                            }
+                          }}
+                          onLoad={(e: any) => {
+                            e.target.style.display = '';
+                            const errEl = e.target.parentElement?.querySelector('.preview-err');
+                            if (errEl) errEl.remove();
+                          }}
+                        />
+                        <span className="absolute top-1.5 left-1.5 text-[7px] font-bold uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Preview</span>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-2 gap-3 items-end">
                       <div className="flex flex-col gap-1">
                         <span className="text-[9px] text-white/60">Orientasi Tampilan</span>
