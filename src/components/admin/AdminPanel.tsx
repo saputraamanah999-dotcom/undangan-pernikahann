@@ -2194,7 +2194,6 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                       <p className="text-[10px] text-center py-1 px-2 rounded-lg bg-white/5 border border-white/10">{pushResult}</p>
                     )}
                   </div>
-                  </div>
                 </div>
               )}
 
