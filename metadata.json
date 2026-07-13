@@ -1,0 +1,6 @@
+{
+  "name": "Undangan Pernikahan Bali",
+  "description": "Website undangan pernikahan digital bertema Bali mewah dengan animasi halus, live visitor tracking, rsvp realtime, dan pemutaran musik latar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
