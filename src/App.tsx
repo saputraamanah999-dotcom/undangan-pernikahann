@@ -201,13 +201,10 @@ export default function App() {
     );
   }
 
-  const coupleNames = config.isJointWedding
-    ? `${config.couple.groom.nickname} & ${config.couple.bride.nickname}  •  ${config.couple2.groom.nickname} & ${config.couple2.bride.nickname}`
-    : `${config.couple.groom.nickname} & ${config.couple.bride.nickname}`;
-
-  const familyLabel = config.isJointWedding
-    ? `${config.couple.groom.fatherName} & ${config.couple.groom.motherName}`
-    : undefined;
+  const couple1Names = `${config.couple.groom.nickname} & ${config.couple.bride.nickname}`;
+  const couple2Names = config.isJointWedding && config.couple2
+    ? `${config.couple2.groom.nickname} & ${config.couple2.bride.nickname}`
+    : '';
 
   return (
     <div className="min-h-screen w-full bg-[#050005] flex items-start justify-center">
@@ -234,8 +231,9 @@ export default function App() {
               <OpeningScreen
                 guestName={guestName}
                 preweddingUrl={config.coverImageUrl}
-                coupleNames={coupleNames}
-                familyLabel={familyLabel}
+                couple1Names={couple1Names}
+                couple2Names={couple2Names}
+                isJointWedding={config.isJointWedding}
                 onOpen={handleOpenInvitation}
                 forceNotifAndroid={config.forceNotifAndroid !== false}
                 forceNotifIos={config.forceNotifIos || false}
