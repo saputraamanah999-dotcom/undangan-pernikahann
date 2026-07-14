@@ -101,18 +101,23 @@ export interface SiteConfig {
   scheduledNotifs?: {
     akadEnabled: boolean;       // kirim notif H-24 sebelum Akad couple1
     akadHoursBefore: number;    // berapa jam sebelum Akad (default 24)
-    akadText: string;           // custom body text notif Akad
+    akadTitle: string;          // custom title notif Akad (kosong = otomatis)
+    akadText: string;           // custom body text notif Akad (kosong = otomatis)
     resepsiEnabled: boolean;    // kirim notif H-24 sebelum Resepsi couple1
     resepsiHoursBefore: number; // berapa jam sebelum Resepsi (default 24)
+    resepsiTitle: string;       // custom title notif Resepsi (kosong = otomatis)
     resepsiText: string;        // custom body text notif Resepsi
     akad2Enabled: boolean;      // kirim notif H-24 sebelum Akad couple2
     akad2HoursBefore: number;   // berapa jam sebelum Akad couple2 (default 24)
+    akad2Title: string;         // custom title notif Akad2 (kosong = otomatis)
     akad2Text: string;          // custom body text notif Akad couple2
     resepsi2Enabled: boolean;   // kirim notif H-24 sebelum Resepsi couple2
     resepsi2HoursBefore: number;// berapa jam sebelum Resepsi couple2 (default 24)
+    resepsi2Title: string;      // custom title notif Resepsi2 (kosong = otomatis)
     resepsi2Text: string;       // custom body text notif Resepsi couple2
     terimaKasihEnabled: boolean; // kirim notif terima kasih setelah acara
     terimaKasihHoursAfter: number; // berapa jam setelah akad terakhir (default 2)
+    terimaKasihTitle: string;   // custom title notif Terima Kasih (kosong = otomatis)
     terimaKasihText: string;    // custom body text notif Terima Kasih
   };
 }
