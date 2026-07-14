@@ -99,10 +99,14 @@ export interface SiteConfig {
   forceNotifAndroid?: boolean; // default true — force notif for Android users
   forceNotifIos?: boolean; // default false — force notif for iOS users (Safari may not support)
   scheduledNotifs?: {
-    akadEnabled: boolean;       // kirim notif H-24 sebelum Akad
+    akadEnabled: boolean;       // kirim notif H-24 sebelum Akad couple1
     akadHoursBefore: number;    // berapa jam sebelum Akad (default 24)
-    resepsiEnabled: boolean;    // kirim notif H-24 sebelum Resepsi
+    resepsiEnabled: boolean;    // kirim notif H-24 sebelum Resepsi couple1
     resepsiHoursBefore: number; // berapa jam sebelum Resepsi (default 24)
+    akad2Enabled: boolean;      // kirim notif H-24 sebelum Akad couple2
+    akad2HoursBefore: number;   // berapa jam sebelum Akad couple2 (default 24)
+    resepsi2Enabled: boolean;   // kirim notif H-24 sebelum Resepsi couple2
+    resepsi2HoursBefore: number;// berapa jam sebelum Resepsi couple2 (default 24)
     terimaKasihEnabled: boolean; // kirim notif terima kasih setelah acara
     terimaKasihHoursAfter: number; // berapa jam setelah akad terakhir (default 2)
   };
