@@ -138,8 +138,9 @@ export default async function handler(req, res) {
       const windowEnd = triggerTime + (5 * 60 * 1000);
 
       if (now >= triggerTime && now <= windowEnd && !sentLog.akadSent) {
-        const title = `H-${hoursBefore}! Pawiwahan ${coupleStr}`;
-        const body = `Dimulai dalam ${hoursBefore} jam. Jangan lupa hadir ya!`;
+        const title = `H-${hoursBefore}! Pawiwahan ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
+        const defaultBody = `Dimulai dalam ${hoursBefore} jam. Jangan lupa hadir ya!`;
+        const body = scheduledNotifs.akadText && scheduledNotifs.akadText.trim() ? scheduledNotifs.akadText : defaultBody;
         const result = await sendPush(adminApp, title, body);
         results.push({ type: "akad", ...result });
         updates.akadSent = true;
@@ -155,8 +156,9 @@ export default async function handler(req, res) {
       const windowEnd = triggerTime + (5 * 60 * 1000);
 
       if (now >= triggerTime && now <= windowEnd && !sentLog.resepsiSent) {
-        const title = `H-${hoursBefore}! Resepsi ${coupleStr}`;
-        const body = `Dimulai dalam ${hoursBefore} jam. Kami menanti kehadiran Anda!`;
+        const title = `H-${hoursBefore}! Resepsi ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
+        const defaultBody = `Dimulai dalam ${hoursBefore} jam. Kami menanti kehadiran Anda!`;
+        const body = scheduledNotifs.resepsiText && scheduledNotifs.resepsiText.trim() ? scheduledNotifs.resepsiText : defaultBody;
         const result = await sendPush(adminApp, title, body);
         results.push({ type: "resepsi", ...result });
         updates.resepsiSent = true;
@@ -173,7 +175,8 @@ export default async function handler(req, res) {
 
       if (now >= triggerTime2 && now <= windowEnd2 && !sentLog.akad2Sent) {
         const title = `H-${hoursBefore2}! Pawiwahan ${couple2Str}`;
-        const body = `Dimulai dalam ${hoursBefore2} jam. Jangan lupa hadir ya!`;
+        const defaultBody = `Dimulai dalam ${hoursBefore2} jam. Jangan lupa hadir ya!`;
+        const body = scheduledNotifs.akad2Text && scheduledNotifs.akad2Text.trim() ? scheduledNotifs.akad2Text : defaultBody;
         const result = await sendPush(adminApp, title, body);
         results.push({ type: "akad2", ...result });
         updates.akad2Sent = true;
@@ -190,7 +193,8 @@ export default async function handler(req, res) {
 
       if (now >= triggerTime2 && now <= windowEnd2 && !sentLog.resepsi2Sent) {
         const title = `H-${hoursBefore2}! Resepsi ${couple2Str}`;
-        const body = `Dimulai dalam ${hoursBefore2} jam. Kami menanti kehadiran Anda!`;
+        const defaultBody = `Dimulai dalam ${hoursBefore2} jam. Kami menanti kehadiran Anda!`;
+        const body = scheduledNotifs.resepsi2Text && scheduledNotifs.resepsi2Text.trim() ? scheduledNotifs.resepsi2Text : defaultBody;
         const result = await sendPush(adminApp, title, body);
         results.push({ type: "resepsi2", ...result });
         updates.resepsi2Sent = true;
@@ -215,7 +219,8 @@ export default async function handler(req, res) {
 
         if (now >= triggerTime && now <= windowEnd && !sentLog.terimaKasihSent) {
           const title = `Terima Kasih! ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
-          const body = `Terima kasih sudah hadir di Pawiwahan${couple2Str ? ` ${coupleStr} & ${couple2Str}` : ` ${coupleStr}`}! Semoga berkah selalu menyertai keluarga.`;
+          const defaultBody = `Terima kasih sudah hadir${couple2Str ? ` di Pawiwahan ${coupleStr} & ${couple2Str}` : ` di Pawiwahan ${coupleStr}`}! Semoga berkah selalu menyertai keluarga.`;
+          const body = scheduledNotifs.terimaKasihText && scheduledNotifs.terimaKasihText.trim() ? scheduledNotifs.terimaKasihText : defaultBody;
           const result = await sendPush(adminApp, title, body);
           results.push({ type: "terimaKasih", ...result });
           updates.terimaKasihSent = true;
