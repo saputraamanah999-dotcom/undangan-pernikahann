@@ -2480,24 +2480,37 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                             <span className="text-[9px] text-white/60">jam sebelum Akad</span>
                           </div>
                           <div>
-                            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Teks Notif (kosongkan = otomatis)</span>
+                            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Judul Notif (kosongkan = otomatis)</span>
+                            <input
+                              type="text"
+                              value={formData.scheduledNotifs?.akadTitle || ''}
+                              onChange={(e) => setFormData({
+                                ...formData,
+                                scheduledNotifs: { ...formData.scheduledNotifs!, akadTitle: e.target.value }
+                              })}
+                              placeholder="H-24! Pawiwahan Putu & Sumi..."
+                              className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] placeholder:text-white/20"
+                            />
+                          </div>
+                          <div>
+                            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Isi Notif (kosongkan = otomatis)</span>
                             <textarea
                               value={formData.scheduledNotifs?.akadText || ''}
                               onChange={(e) => setFormData({
                                 ...formData,
                                 scheduledNotifs: { ...formData.scheduledNotifs!, akadText: e.target.value }
                               })}
-                              placeholder="Kosongkan untuk teks otomatis..."
+                              placeholder="Dimulai dalam 24 jam. Jangan lupa hadir ya!"
                               rows={2}
                               className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] resize-none placeholder:text-white/20"
                             />
                           </div>
                           <div className="p-2.5 rounded-lg bg-amber-500/5 border border-amber-500/10">
-                            <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1">Preview Notifikasi</span>
-                            <p className="text-[9px] text-amber-200/80 leading-relaxed">
-                              <span className="font-bold text-amber-200">H-{formData.scheduledNotifs?.akadHoursBefore || 24}! Pawiwahan {formData.couple?.groom?.nickname || '...'} & {formData.couple?.bride?.nickname || '...'}{formData.isJointWedding && formData.couple2 ? ` & ${formData.couple2?.groom?.nickname} & ${formData.couple2?.bride?.nickname}` : ''}</span>
-                              <span className="text-amber-200/80"> — {formData.scheduledNotifs?.akadText || `dimulai dalam ${formData.scheduledNotifs?.akadHoursBefore || 24} jam. Jangan lupa hadir ya!`}</span>
-                            </p>
+                            <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1.5">Preview Notifikasi</span>
+                            <div className="bg-black/40 rounded-lg p-2.5 space-y-1">
+                              <p className="text-[10px] font-bold text-amber-200 leading-tight">{formData.scheduledNotifs?.akadTitle || `H-${formData.scheduledNotifs?.akadHoursBefore || 24}! Pawiwahan ${formData.couple?.groom?.nickname || '...'} & ${formData.couple?.bride?.nickname || '...'}${formData.isJointWedding && formData.couple2 ? ` & ${formData.couple2?.groom?.nickname} & ${formData.couple2?.bride?.nickname}` : ''}`}</p>
+                              <p className="text-[9px] text-amber-200/70 leading-relaxed">{formData.scheduledNotifs?.akadText || `Dimulai dalam ${formData.scheduledNotifs?.akadHoursBefore || 24} jam. Jangan lupa hadir ya!`}</p>
+                            </div>
                           </div>
                         </>
                       )}
@@ -2553,24 +2566,37 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                               <span className="text-[9px] text-white/60">jam sebelum Resepsi</span>
                             </div>
                             <div>
-                              <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Teks Notif (kosongkan = otomatis)</span>
+                              <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Judul Notif (kosongkan = otomatis)</span>
+                              <input
+                                type="text"
+                                value={formData.scheduledNotifs?.resepsiTitle || ''}
+                                onChange={(e) => setFormData({
+                                  ...formData,
+                                  scheduledNotifs: { ...formData.scheduledNotifs!, resepsiTitle: e.target.value }
+                                })}
+                                placeholder="H-24! Resepsi Putu & Sumi..."
+                                className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] placeholder:text-white/20"
+                              />
+                            </div>
+                            <div>
+                              <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Isi Notif (kosongkan = otomatis)</span>
                               <textarea
                                 value={formData.scheduledNotifs?.resepsiText || ''}
                                 onChange={(e) => setFormData({
                                   ...formData,
                                   scheduledNotifs: { ...formData.scheduledNotifs!, resepsiText: e.target.value }
                                 })}
-                                placeholder="Kosongkan untuk teks otomatis..."
+                                placeholder="Dimulai dalam 24 jam. Kami menanti kehadiran Anda!"
                                 rows={2}
                                 className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] resize-none placeholder:text-white/20"
                               />
                             </div>
                             <div className="p-2.5 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
-                              <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1">Preview Notifikasi</span>
-                              <p className="text-[9px] text-emerald-200/80 leading-relaxed">
-                                <span className="font-bold text-emerald-200">H-{formData.scheduledNotifs?.resepsiHoursBefore || 24}! Resepsi {formData.couple?.groom?.nickname || '...'} & {formData.couple?.bride?.nickname || '...'}{formData.isJointWedding && formData.couple2 ? ` & ${formData.couple2?.groom?.nickname} & ${formData.couple2?.bride?.nickname}` : ''}</span>
-                                <span className="text-emerald-200/80"> — {formData.scheduledNotifs?.resepsiText || `dimulai dalam ${formData.scheduledNotifs?.resepsiHoursBefore || 24} jam. Kami menanti kehadiran Anda!`}</span>
-                              </p>
+                              <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1.5">Preview Notifikasi</span>
+                              <div className="bg-black/40 rounded-lg p-2.5 space-y-1">
+                                <p className="text-[10px] font-bold text-emerald-200 leading-tight">{formData.scheduledNotifs?.resepsiTitle || `H-${formData.scheduledNotifs?.resepsiHoursBefore || 24}! Resepsi ${formData.couple?.groom?.nickname || '...'} & ${formData.couple?.bride?.nickname || '...'}${formData.isJointWedding && formData.couple2 ? ` & ${formData.couple2?.groom?.nickname} & ${formData.couple2?.bride?.nickname}` : ''}`}</p>
+                                <p className="text-[9px] text-emerald-200/70 leading-relaxed">{formData.scheduledNotifs?.resepsiText || `Dimulai dalam ${formData.scheduledNotifs?.resepsiHoursBefore || 24} jam. Kami menanti kehadiran Anda!`}</p>
+                              </div>
                             </div>
                           </>
                         )}
@@ -2623,24 +2649,37 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                               <span className="text-[9px] text-white/60">jam sebelum Akad</span>
                             </div>
                             <div>
-                              <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Teks Notif (kosongkan = otomatis)</span>
+                              <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Judul Notif (kosongkan = otomatis)</span>
+                              <input
+                                type="text"
+                                value={formData.scheduledNotifs?.akad2Title || ''}
+                                onChange={(e) => setFormData({
+                                  ...formData,
+                                  scheduledNotifs: { ...formData.scheduledNotifs!, akad2Title: e.target.value }
+                                })}
+                                placeholder="H-24! Pawiwahan Julianto & Peni..."
+                                className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] placeholder:text-white/20"
+                              />
+                            </div>
+                            <div>
+                              <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Isi Notif (kosongkan = otomatis)</span>
                               <textarea
                                 value={formData.scheduledNotifs?.akad2Text || ''}
                                 onChange={(e) => setFormData({
                                   ...formData,
                                   scheduledNotifs: { ...formData.scheduledNotifs!, akad2Text: e.target.value }
                                 })}
-                                placeholder="Kosongkan untuk teks otomatis..."
+                                placeholder="Dimulai dalam 24 jam. Jangan lupa hadir ya!"
                                 rows={2}
                                 className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] resize-none placeholder:text-white/20"
                               />
                             </div>
                             <div className="p-2.5 rounded-lg bg-cyan-500/5 border border-cyan-500/10">
-                              <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1">Preview Notifikasi</span>
-                              <p className="text-[9px] text-cyan-200/80 leading-relaxed">
-                                <span className="font-bold text-cyan-200">H-{formData.scheduledNotifs?.akad2HoursBefore || 24}! Pawiwahan {formData.couple2?.groom?.nickname || '...'} & {formData.couple2?.bride?.nickname || '...'}</span>
-                                <span className="text-cyan-200/80"> — {formData.scheduledNotifs?.akad2Text || `dimulai dalam ${formData.scheduledNotifs?.akad2HoursBefore || 24} jam. Jangan lupa hadir ya!`}</span>
-                              </p>
+                              <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1.5">Preview Notifikasi</span>
+                              <div className="bg-black/40 rounded-lg p-2.5 space-y-1">
+                                <p className="text-[10px] font-bold text-cyan-200 leading-tight">{formData.scheduledNotifs?.akad2Title || `H-${formData.scheduledNotifs?.akad2HoursBefore || 24}! Pawiwahan ${formData.couple2?.groom?.nickname || '...'} & ${formData.couple2?.bride?.nickname || '...'}`}</p>
+                                <p className="text-[9px] text-cyan-200/70 leading-relaxed">{formData.scheduledNotifs?.akad2Text || `Dimulai dalam ${formData.scheduledNotifs?.akad2HoursBefore || 24} jam. Jangan lupa hadir ya!`}</p>
+                              </div>
                             </div>
                           </>
                         )}
@@ -2693,24 +2732,37 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                               <span className="text-[9px] text-white/60">jam sebelum Resepsi</span>
                             </div>
                             <div>
-                              <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Teks Notif (kosongkan = otomatis)</span>
+                              <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Judul Notif (kosongkan = otomatis)</span>
+                              <input
+                                type="text"
+                                value={formData.scheduledNotifs?.resepsi2Title || ''}
+                                onChange={(e) => setFormData({
+                                  ...formData,
+                                  scheduledNotifs: { ...formData.scheduledNotifs!, resepsi2Title: e.target.value }
+                                })}
+                                placeholder="H-24! Resepsi Julianto & Peni..."
+                                className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] placeholder:text-white/20"
+                              />
+                            </div>
+                            <div>
+                              <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Isi Notif (kosongkan = otomatis)</span>
                               <textarea
                                 value={formData.scheduledNotifs?.resepsi2Text || ''}
                                 onChange={(e) => setFormData({
                                   ...formData,
                                   scheduledNotifs: { ...formData.scheduledNotifs!, resepsi2Text: e.target.value }
                                 })}
-                                placeholder="Kosongkan untuk teks otomatis..."
+                                placeholder="Dimulai dalam 24 jam. Kami menanti kehadiran Anda!"
                                 rows={2}
                                 className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] resize-none placeholder:text-white/20"
                               />
                             </div>
                             <div className="p-2.5 rounded-lg bg-teal-500/5 border border-teal-500/10">
-                              <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1">Preview Notifikasi</span>
-                              <p className="text-[9px] text-teal-200/80 leading-relaxed">
-                                <span className="font-bold text-teal-200">H-{formData.scheduledNotifs?.resepsi2HoursBefore || 24}! Resepsi {formData.couple2?.groom?.nickname || '...'} & {formData.couple2?.bride?.nickname || '...'}</span>
-                                <span className="text-teal-200/80"> — {formData.scheduledNotifs?.resepsi2Text || `dimulai dalam ${formData.scheduledNotifs?.resepsi2HoursBefore || 24} jam. Kami menanti kehadiran Anda!`}</span>
-                              </p>
+                              <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1.5">Preview Notifikasi</span>
+                              <div className="bg-black/40 rounded-lg p-2.5 space-y-1">
+                                <p className="text-[10px] font-bold text-teal-200 leading-tight">{formData.scheduledNotifs?.resepsi2Title || `H-${formData.scheduledNotifs?.resepsi2HoursBefore || 24}! Resepsi ${formData.couple2?.groom?.nickname || '...'} & ${formData.couple2?.bride?.nickname || '...'}`}</p>
+                                <p className="text-[9px] text-teal-200/70 leading-relaxed">{formData.scheduledNotifs?.resepsi2Text || `Dimulai dalam ${formData.scheduledNotifs?.resepsi2HoursBefore || 24} jam. Kami menanti kehadiran Anda!`}</p>
+                              </div>
                             </div>
                           </>
                         )}
@@ -2764,24 +2816,37 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                             <span className="text-[9px] text-white/60">jam setelah akad terakhir</span>
                           </div>
                           <div>
-                            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Teks Notif (kosongkan = otomatis)</span>
+                            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Judul Notif (kosongkan = otomatis)</span>
+                            <input
+                              type="text"
+                              value={formData.scheduledNotifs?.terimaKasihTitle || ''}
+                              onChange={(e) => setFormData({
+                                ...formData,
+                                scheduledNotifs: { ...formData.scheduledNotifs!, terimaKasihTitle: e.target.value }
+                              })}
+                              placeholder="Terima Kasih! Putu & Sumi..."
+                              className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] placeholder:text-white/20"
+                            />
+                          </div>
+                          <div>
+                            <span className="text-[8px] text-white/40 uppercase tracking-wider block mb-1">Isi Notif (kosongkan = otomatis)</span>
                             <textarea
                               value={formData.scheduledNotifs?.terimaKasihText || ''}
                               onChange={(e) => setFormData({
                                 ...formData,
                                 scheduledNotifs: { ...formData.scheduledNotifs!, terimaKasihText: e.target.value }
                               })}
-                              placeholder="Kosongkan untuk teks otomatis..."
+                              placeholder="Semoga berkah selalu menyertai keluarga."
                               rows={2}
                               className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[11px] text-white/80 outline-none focus:border-[#C9A24B] resize-none placeholder:text-white/20"
                             />
                           </div>
                           <div className="p-2.5 rounded-lg bg-pink-500/5 border border-pink-500/10">
-                            <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1">Preview Notifikasi</span>
-                            <p className="text-[9px] text-pink-200/80 leading-relaxed">
-                              <span className="font-bold text-pink-200">Terima kasih sudah hadir di Pawiwahan {formData.couple?.groom?.nickname || '...'} & {formData.couple?.bride?.nickname || '...'}{formData.isJointWedding && formData.couple2 ? ` & ${formData.couple2?.groom?.nickname} & ${formData.couple2?.bride?.nickname}` : ''}!</span>
-                              <span className="text-pink-200/80"> {formData.scheduledNotifs?.terimaKasihText || 'Semoga berkah selalu menyertai keluarga.'}</span>
-                            </p>
+                            <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1.5">Preview Notifikasi</span>
+                            <div className="bg-black/40 rounded-lg p-2.5 space-y-1">
+                              <p className="text-[10px] font-bold text-pink-200 leading-tight">{formData.scheduledNotifs?.terimaKasihTitle || `Terima Kasih! ${formData.couple?.groom?.nickname || '...'} & ${formData.couple?.bride?.nickname || '...'}${formData.isJointWedding && formData.couple2 ? ` & ${formData.couple2?.groom?.nickname} & ${formData.couple2?.bride?.nickname}` : ''}`}</p>
+                              <p className="text-[9px] text-pink-200/70 leading-relaxed">{formData.scheduledNotifs?.terimaKasihText || 'Semoga berkah selalu menyertai keluarga.'}</p>
+                            </div>
                           </div>
                         </>
                       )}
