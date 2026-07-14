@@ -113,6 +113,14 @@ export default async function handler(req, res) {
     const brideName = config.couple?.bride?.nickname || "Mempelai Wanita";
     const coupleStr = `${groomName} & ${brideName}`;
 
+    // Couple 2 names (if joint wedding)
+    let groom2Name = "", bride2Name = "", couple2Str = "";
+    if (config.isJointWedding && config.couple2) {
+      groom2Name = config.couple2.groom?.nickname || "Mempelai Pria 2";
+      bride2Name = config.couple2.bride?.nickname || "Mempelai Wanita 2";
+      couple2Str = `${groom2Name} & ${bride2Name}`;
+    }
+
     // 2. Read sent log to avoid duplicates
     const sentLogSnap = await db.doc(`sites/${SITE_ID}/scheduledNotifLog/status`).get();
     const sentLog = sentLogSnap.exists ? sentLogSnap.data() : {};
@@ -156,6 +164,40 @@ export default async function handler(req, res) {
       }
     }
 
+    // 4b. Check Akad 2 notification (couple2)
+    if (scheduledNotifs.akad2Enabled && config.event2?.date) {
+      const akad2Time = new Date(config.event2.date).getTime();
+      const hoursBefore2 = scheduledNotifs.akad2HoursBefore || 24;
+      const triggerTime2 = akad2Time - (hoursBefore2 * 60 * 60 * 1000);
+      const windowEnd2 = triggerTime2 + (5 * 60 * 1000);
+
+      if (now >= triggerTime2 && now <= windowEnd2 && !sentLog.akad2Sent) {
+        const title = `H-${hoursBefore2}! Pawiwahan ${couple2Str}`;
+        const body = `Dimulai dalam ${hoursBefore2} jam. Jangan lupa hadir ya!`;
+        const result = await sendPush(adminApp, title, body);
+        results.push({ type: "akad2", ...result });
+        updates.akad2Sent = true;
+        updates.akad2SentAt = new Date().toISOString();
+      }
+    }
+
+    // 4c. Check Resepsi 2 notification (couple2)
+    if (scheduledNotifs.resepsi2Enabled && config.reception2?.date) {
+      const resepsi2Time = new Date(config.reception2.date).getTime();
+      const hoursBefore2 = scheduledNotifs.resepsi2HoursBefore || 24;
+      const triggerTime2 = resepsi2Time - (hoursBefore2 * 60 * 60 * 1000);
+      const windowEnd2 = triggerTime2 + (5 * 60 * 1000);
+
+      if (now >= triggerTime2 && now <= windowEnd2 && !sentLog.resepsi2Sent) {
+        const title = `H-${hoursBefore2}! Resepsi ${couple2Str}`;
+        const body = `Dimulai dalam ${hoursBefore2} jam. Kami menanti kehadiran Anda!`;
+        const result = await sendPush(adminApp, title, body);
+        results.push({ type: "resepsi2", ...result });
+        updates.resepsi2Sent = true;
+        updates.resepsi2SentAt = new Date().toISOString();
+      }
+    }
+
     // 5. Check Terima Kasih notification
     if (scheduledNotifs.terimaKasihEnabled) {
       // Determine the last event time (Akad or Resepsi, whichever is later)
@@ -172,8 +214,8 @@ export default async function handler(req, res) {
         const windowEnd = triggerTime + (5 * 60 * 1000);
 
         if (now >= triggerTime && now <= windowEnd && !sentLog.terimaKasihSent) {
-          const title = `Terima Kasih! ${coupleStr}`;
-          const body = `Terima kasih sudah hadir di Pawiwahan ${coupleStr}! Semoga berkah selalu menyertai keluarga.`;
+          const title = `Terima Kasih! ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
+          const body = `Terima kasih sudah hadir di Pawiwahan${couple2Str ? ` ${coupleStr} & ${couple2Str}` : ` ${coupleStr}`}! Semoga berkah selalu menyertai keluarga.`;
           const result = await sendPush(adminApp, title, body);
           results.push({ type: "terimaKasih", ...result });
           updates.terimaKasihSent = true;
@@ -196,11 +238,19 @@ export default async function handler(req, res) {
       const upcoming = [];
       if (scheduledNotifs.akadEnabled && config.event?.date) {
         const t = new Date(config.event.date).getTime() - ((scheduledNotifs.akadHoursBefore || 24) * 3600000);
-        if (t > now) upcoming.push(`Akad H-${scheduledNotifs.akadHoursBefore || 24}: ${new Date(t).toLocaleString('id-ID', { timeZone: 'Asia/Makassar' })}`);
+        if (t > now) upcoming.push(`Akad H-${scheduledNotifs.akadHoursBefore || 24} (${coupleStr}): ${new Date(t).toLocaleString('id-ID', { timeZone: 'Asia/Makassar' })}`);
       }
       if (scheduledNotifs.resepsiEnabled && config.reception?.date) {
         const t = new Date(config.reception.date).getTime() - ((scheduledNotifs.resepsiHoursBefore || 24) * 3600000);
-        if (t > now) upcoming.push(`Resepsi H-${scheduledNotifs.resepsiHoursBefore || 24}: ${new Date(t).toLocaleString('id-ID', { timeZone: 'Asia/Makassar' })}`);
+        if (t > now) upcoming.push(`Resepsi H-${scheduledNotifs.resepsiHoursBefore || 24} (${coupleStr}): ${new Date(t).toLocaleString('id-ID', { timeZone: 'Asia/Makassar' })}`);
+      }
+      if (scheduledNotifs.akad2Enabled && config.event2?.date) {
+        const t = new Date(config.event2.date).getTime() - ((scheduledNotifs.akad2HoursBefore || 24) * 3600000);
+        if (t > now) upcoming.push(`Akad H-${scheduledNotifs.akad2HoursBefore || 24} (${couple2Str}): ${new Date(t).toLocaleString('id-ID', { timeZone: 'Asia/Makassar' })}`);
+      }
+      if (scheduledNotifs.resepsi2Enabled && config.reception2?.date) {
+        const t = new Date(config.reception2.date).getTime() - ((scheduledNotifs.resepsi2HoursBefore || 24) * 3600000);
+        if (t > now) upcoming.push(`Resepsi H-${scheduledNotifs.resepsi2HoursBefore || 24} (${couple2Str}): ${new Date(t).toLocaleString('id-ID', { timeZone: 'Asia/Makassar' })}`);
       }
       if (scheduledNotifs.terimaKasihEnabled) {
         const eventTimes = [];
@@ -213,8 +263,10 @@ export default async function handler(req, res) {
       }
 
       const alreadySent = [];
-      if (sentLog.akadSent) alreadySent.push("Akad");
-      if (sentLog.resepsiSent) alreadySent.push("Resepsi");
+      if (sentLog.akadSent) alreadySent.push(`Akad (${coupleStr})`);
+      if (sentLog.resepsiSent) alreadySent.push(`Resepsi (${coupleStr})`);
+      if (sentLog.akad2Sent) alreadySent.push(`Akad (${couple2Str})`);
+      if (sentLog.resepsi2Sent) alreadySent.push(`Resepsi (${couple2Str})`);
       if (sentLog.terimaKasihSent) alreadySent.push("Terima Kasih");
 
       let msg = "Tidak ada notifikasi yang perlu dikirim saat ini.";
