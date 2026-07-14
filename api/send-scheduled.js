@@ -138,7 +138,8 @@ export default async function handler(req, res) {
       const windowEnd = triggerTime + (5 * 60 * 1000);
 
       if (now >= triggerTime && now <= windowEnd && !sentLog.akadSent) {
-        const title = `H-${hoursBefore}! Pawiwahan ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
+        const defaultTitle = `H-${hoursBefore}! Pawiwahan ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
+        const title = scheduledNotifs.akadTitle && scheduledNotifs.akadTitle.trim() ? scheduledNotifs.akadTitle : defaultTitle;
         const defaultBody = `Dimulai dalam ${hoursBefore} jam. Jangan lupa hadir ya!`;
         const body = scheduledNotifs.akadText && scheduledNotifs.akadText.trim() ? scheduledNotifs.akadText : defaultBody;
         const result = await sendPush(adminApp, title, body);
@@ -156,7 +157,8 @@ export default async function handler(req, res) {
       const windowEnd = triggerTime + (5 * 60 * 1000);
 
       if (now >= triggerTime && now <= windowEnd && !sentLog.resepsiSent) {
-        const title = `H-${hoursBefore}! Resepsi ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
+        const defaultTitle = `H-${hoursBefore}! Resepsi ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
+        const title = scheduledNotifs.resepsiTitle && scheduledNotifs.resepsiTitle.trim() ? scheduledNotifs.resepsiTitle : defaultTitle;
         const defaultBody = `Dimulai dalam ${hoursBefore} jam. Kami menanti kehadiran Anda!`;
         const body = scheduledNotifs.resepsiText && scheduledNotifs.resepsiText.trim() ? scheduledNotifs.resepsiText : defaultBody;
         const result = await sendPush(adminApp, title, body);
@@ -174,7 +176,8 @@ export default async function handler(req, res) {
       const windowEnd2 = triggerTime2 + (5 * 60 * 1000);
 
       if (now >= triggerTime2 && now <= windowEnd2 && !sentLog.akad2Sent) {
-        const title = `H-${hoursBefore2}! Pawiwahan ${couple2Str}`;
+        const defaultTitle = `H-${hoursBefore2}! Pawiwahan ${couple2Str}`;
+        const title = scheduledNotifs.akad2Title && scheduledNotifs.akad2Title.trim() ? scheduledNotifs.akad2Title : defaultTitle;
         const defaultBody = `Dimulai dalam ${hoursBefore2} jam. Jangan lupa hadir ya!`;
         const body = scheduledNotifs.akad2Text && scheduledNotifs.akad2Text.trim() ? scheduledNotifs.akad2Text : defaultBody;
         const result = await sendPush(adminApp, title, body);
@@ -192,7 +195,8 @@ export default async function handler(req, res) {
       const windowEnd2 = triggerTime2 + (5 * 60 * 1000);
 
       if (now >= triggerTime2 && now <= windowEnd2 && !sentLog.resepsi2Sent) {
-        const title = `H-${hoursBefore2}! Resepsi ${couple2Str}`;
+        const defaultTitle = `H-${hoursBefore2}! Resepsi ${couple2Str}`;
+        const title = scheduledNotifs.resepsi2Title && scheduledNotifs.resepsi2Title.trim() ? scheduledNotifs.resepsi2Title : defaultTitle;
         const defaultBody = `Dimulai dalam ${hoursBefore2} jam. Kami menanti kehadiran Anda!`;
         const body = scheduledNotifs.resepsi2Text && scheduledNotifs.resepsi2Text.trim() ? scheduledNotifs.resepsi2Text : defaultBody;
         const result = await sendPush(adminApp, title, body);
@@ -218,7 +222,8 @@ export default async function handler(req, res) {
         const windowEnd = triggerTime + (5 * 60 * 1000);
 
         if (now >= triggerTime && now <= windowEnd && !sentLog.terimaKasihSent) {
-          const title = `Terima Kasih! ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
+          const defaultTitle = `Terima Kasih! ${coupleStr}${couple2Str ? ` & ${couple2Str}` : ''}`;
+          const title = scheduledNotifs.terimaKasihTitle && scheduledNotifs.terimaKasihTitle.trim() ? scheduledNotifs.terimaKasihTitle : defaultTitle;
           const defaultBody = `Terima kasih sudah hadir${couple2Str ? ` di Pawiwahan ${coupleStr} & ${couple2Str}` : ` di Pawiwahan ${coupleStr}`}! Semoga berkah selalu menyertai keluarga.`;
           const body = scheduledNotifs.terimaKasihText && scheduledNotifs.terimaKasihText.trim() ? scheduledNotifs.terimaKasihText : defaultBody;
           const result = await sendPush(adminApp, title, body);
