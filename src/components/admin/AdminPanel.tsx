@@ -766,7 +766,7 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
             )}
 
             {/* Dashboard Tabs bar */}
-            <div className="flex gap-1.5 overflow-x-auto pb-2 border-b border-white/5 mb-4 scrollbar-thin">
+            <div className="flex flex-wrap gap-1.5 pb-2 border-b border-white/5 mb-4">
               {[
                 { id: 'general', label: 'Umum', icon: Settings },
                 { id: 'events', label: 'Acara', icon: Calendar },
@@ -2421,9 +2421,14 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                     {/* Preview: Nama Mempelai */}
                     <div className="p-3 rounded-xl bg-black/30 border border-white/5">
                       <span className="text-[8px] text-white/40 uppercase tracking-widest block mb-1">Preview Nama Mempelai di Notifikasi</span>
-                      <span className="text-xs font-black text-[#C9A24B] uppercase tracking-wider">
+                      <span className="text-xs font-black text-[#C9A24B] uppercase tracking-wider block">
                         {formData.couple?.groom?.nickname || 'Mempelai Pria'} & {formData.couple?.bride?.nickname || 'Mempelai Wanita'}
                       </span>
+                      {formData.isJointWedding && formData.couple2 && (
+                        <span className="text-xs font-black text-emerald-300 uppercase tracking-wider block mt-1">
+                          {formData.couple2?.groom?.nickname || 'Mempelai Pria 2'} & {formData.couple2?.bride?.nickname || 'Mempelai Wanita 2'}
+                        </span>
+                      )}
                     </div>
 
                     {/* Notif 1: Akad */}
@@ -2544,6 +2549,118 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                       </div>
                     )}
 
+                    {/* Notif 2b: Akad Couple 2 (Julianto & Peni) */}
+                    {formData.isJointWedding && formData.couple2 && formData.event2 && (
+                      <div className="p-3.5 rounded-xl bg-white/[0.02] border border-cyan-500/20 flex flex-col gap-2.5">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-[10px] font-bold uppercase text-cyan-200 leading-tight flex items-center gap-1.5">
+                              <Calendar className="w-3 h-3" /> Notif Pengingat Akad — {formData.couple2?.groom?.nickname} & {formData.couple2?.bride?.nickname}
+                            </p>
+                            <p className="text-[8px] text-white/40 mt-0.5">
+                              Tanggal Akad: {formData.event2?.date ? new Date(formData.event2.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Belum diatur'}
+                            </p>
+                          </div>
+                          <input
+                            type="checkbox"
+                            checked={formData.scheduledNotifs?.akad2Enabled || false}
+                            onChange={(e) => setFormData({
+                              ...formData,
+                              scheduledNotifs: {
+                                ...formData.scheduledNotifs,
+                                akad2Enabled: e.target.checked,
+                                akad2HoursBefore: formData.scheduledNotifs?.akad2HoursBefore || 24,
+                              }
+                            })}
+                            className="w-4 h-4 accent-cyan-500"
+                          />
+                        </div>
+                        {formData.scheduledNotifs?.akad2Enabled && (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[9px] text-white/60 shrink-0">Kirim</span>
+                              <input
+                                type="number"
+                                min="1" max="168"
+                                value={formData.scheduledNotifs?.akad2HoursBefore || 24}
+                                onChange={(e) => setFormData({
+                                  ...formData,
+                                  scheduledNotifs: {
+                                    ...formData.scheduledNotifs!,
+                                    akad2HoursBefore: parseInt(e.target.value) || 24,
+                                  }
+                                })}
+                                className="w-16 px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-center outline-none focus:border-[#C9A24B]"
+                              />
+                              <span className="text-[9px] text-white/60">jam sebelum Akad</span>
+                            </div>
+                            <div className="p-2.5 rounded-lg bg-cyan-500/5 border border-cyan-500/10">
+                              <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1">Preview Notifikasi</span>
+                              <p className="text-[9px] text-cyan-200/80 leading-relaxed">
+                                <span className="font-bold text-cyan-200">H-{formData.scheduledNotifs?.akad2HoursBefore || 24}! Pawiwahan {formData.couple2?.groom?.nickname || '...'} & {formData.couple2?.bride?.nickname || '...'} dimulai dalam {formData.scheduledNotifs?.akad2HoursBefore || 24} jam. Jangan lupa hadir ya!</span>
+                              </p>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Notif 2c: Resepsi Couple 2 (Julianto & Peni) */}
+                    {formData.isJointWedding && formData.couple2 && formData.reception2 && (
+                      <div className="p-3.5 rounded-xl bg-white/[0.02] border border-teal-500/20 flex flex-col gap-2.5">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-[10px] font-bold uppercase text-teal-200 leading-tight flex items-center gap-1.5">
+                              <Calendar className="w-3 h-3" /> Notif Pengingat Resepsi — {formData.couple2?.groom?.nickname} & {formData.couple2?.bride?.nickname}
+                            </p>
+                            <p className="text-[8px] text-white/40 mt-0.5">
+                              Tanggal Resepsi: {formData.reception2?.date ? new Date(formData.reception2.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Belum diatur'}
+                            </p>
+                          </div>
+                          <input
+                            type="checkbox"
+                            checked={formData.scheduledNotifs?.resepsi2Enabled || false}
+                            onChange={(e) => setFormData({
+                              ...formData,
+                              scheduledNotifs: {
+                                ...formData.scheduledNotifs,
+                                resepsi2Enabled: e.target.checked,
+                                resepsi2HoursBefore: formData.scheduledNotifs?.resepsi2HoursBefore || 24,
+                              }
+                            })}
+                            className="w-4 h-4 accent-teal-500"
+                          />
+                        </div>
+                        {formData.scheduledNotifs?.resepsi2Enabled && (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[9px] text-white/60 shrink-0">Kirim</span>
+                              <input
+                                type="number"
+                                min="1" max="168"
+                                value={formData.scheduledNotifs?.resepsi2HoursBefore || 24}
+                                onChange={(e) => setFormData({
+                                  ...formData,
+                                  scheduledNotifs: {
+                                    ...formData.scheduledNotifs!,
+                                    resepsi2HoursBefore: parseInt(e.target.value) || 24,
+                                  }
+                                })}
+                                className="w-16 px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-center outline-none focus:border-[#C9A24B]"
+                              />
+                              <span className="text-[9px] text-white/60">jam sebelum Resepsi</span>
+                            </div>
+                            <div className="p-2.5 rounded-lg bg-teal-500/5 border border-teal-500/10">
+                              <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1">Preview Notifikasi</span>
+                              <p className="text-[9px] text-teal-200/80 leading-relaxed">
+                                <span className="font-bold text-teal-200">H-{formData.scheduledNotifs?.resepsi2HoursBefore || 24}! Resepsi {formData.couple2?.groom?.nickname || '...'} & {formData.couple2?.bride?.nickname || '...'} dimulai dalam {formData.scheduledNotifs?.resepsi2HoursBefore || 24} jam. Kami menanti kehadiran Anda!</span>
+                              </p>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+
                     {/* Notif 3: Terima Kasih */}
                     <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/10 flex flex-col gap-2.5">
                       <div className="flex items-center justify-between">
@@ -2593,7 +2710,7 @@ export function AdminPanel({ isOpen, onClose, config }: AdminPanelProps) {
                           <div className="p-2.5 rounded-lg bg-pink-500/5 border border-pink-500/10">
                             <span className="text-[7px] text-white/30 uppercase tracking-widest block mb-1">Preview Notifikasi</span>
                             <p className="text-[9px] text-pink-200/80 leading-relaxed">
-                              <span className="font-bold text-pink-200">Terima kasih sudah hadir di Pawiwahan {formData.couple?.groom?.nickname || '...'} & {formData.couple?.bride?.nickname || '...'}! Semoga berkah selalu menyertai keluarga.</span>
+                              <span className="font-bold text-pink-200">Terima kasih sudah hadir di Pawiwahan {formData.couple?.groom?.nickname || '...'} & {formData.couple?.bride?.nickname || '...'}{formData.isJointWedding && formData.couple2 ? ` & ${formData.couple2?.groom?.nickname} & ${formData.couple2?.bride?.nickname}` : ''}! Semoga berkah selalu menyertai keluarga.</span>
                             </p>
                           </div>
                         </>
