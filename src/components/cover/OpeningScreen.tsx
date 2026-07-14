@@ -9,8 +9,9 @@ import { updateVisitorNotifStatus } from '../../hooks/useVisitorTracker';
 interface OpeningScreenProps {
   guestName: string;
   preweddingUrl: string;
-  coupleNames: string;
-  familyLabel?: string;
+  couple1Names: string;
+  couple2Names?: string;
+  isJointWedding?: boolean;
   onOpen: () => void;
   forceNotifAndroid: boolean;
   forceNotifIos: boolean;
@@ -29,7 +30,7 @@ function isAndroid(): boolean {
   return /android/i.test(navigator.userAgent || navigator.vendor || '');
 }
 
-export function OpeningScreen({ guestName, preweddingUrl, coupleNames, familyLabel, onOpen, forceNotifAndroid, forceNotifIos }: OpeningScreenProps) {
+export function OpeningScreen({ guestName, preweddingUrl, couple1Names, couple2Names, isJointWedding, onOpen, forceNotifAndroid, forceNotifIos }: OpeningScreenProps) {
   const [isOpening, setIsOpening] = useState(false);
   const [notifState, setNotifState] = useState<'pending' | 'denied' | 'unsupported'>('pending');
   const { requestPermission } = useNotificationPermission();
@@ -169,25 +170,24 @@ export function OpeningScreen({ guestName, preweddingUrl, coupleNames, familyLab
             Pawiwahan Suci
           </motion.p>
 
-          {familyLabel && (
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className="text-[10px] tracking-[0.2em] uppercase text-[#FDF6E9]/60 font-medium mb-2"
-            >
-              Keluarga {familyLabel}
-            </motion.p>
-          )}
-          
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.4 }}
-            className="font-serif text-5xl sm:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-amber-300 to-amber-100 mb-2 drop-shadow-lg uppercase leading-none"
+            className={`font-serif font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-amber-300 to-amber-100 drop-shadow-lg uppercase leading-none ${isJointWedding && couple2Names ? 'text-3xl sm:text-4xl' : 'text-5xl sm:text-6xl'}`}
           >
-            {coupleNames}
+            {couple1Names}
           </motion.h1>
+          {isJointWedding && couple2Names && (
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.55 }}
+              className="font-serif text-xl sm:text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-100/70 via-amber-300/70 to-amber-100/70 drop-shadow-lg uppercase leading-none mt-1"
+            >
+              {couple2Names}
+            </motion.h2>
+          )}
 
           <motion.div
             initial={{ scaleX: 0 }}
